@@ -1,14 +1,12 @@
 package com.jiuzhang.guojing.dribbbo;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class ShotCommentViewHolder extends RecyclerView.ViewHolder {
+public class ShotCommentViewHolder extends BaseViewHolder {
 
     @BindView(R.id.comment_author_name) TextView authorName;
     @BindView(R.id.comment_author_picture) ImageView authorPicture;
@@ -18,6 +16,5 @@ public class ShotCommentViewHolder extends RecyclerView.ViewHolder {
 
     public ShotCommentViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
     }
 }

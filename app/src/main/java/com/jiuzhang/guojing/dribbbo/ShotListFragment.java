@@ -1,6 +1,5 @@
 package com.jiuzhang.guojing.dribbbo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -77,42 +76,6 @@ public class ShotListFragment extends Fragment {
 
         adapter = new InfiniteAdapter(getContext(), data, onLoadMore);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setAdapter(new RecyclerView.Adapter<ShotViewHolder>() {
-//            @Override
-//            public ShotViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//                View view = LayoutInflater
-//                        .from(getContext())
-//                        .inflate(R.layout.list_item_shot, parent, false);
-//                return new ShotViewHolder(view);
-//            }
-//
-//            @Override
-//            public void onBindViewHolder(ShotViewHolder holder, int position) {
-//                final Shot shot = data.get(position);
-//                holder.root.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Intent intent = new Intent(getContext(), ShotActivity.class);
-//                        startActivity(intent);
-//                    }
-//                });
-//                holder.actionBucket.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(v.getContext(), "bucket clicked", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//                holder.image.setImageDrawable(getResources().getDrawable(R.mipmap.artboard_5));
-//                holder.likeCount.setText(String.valueOf(shot.likeCount));
-//                holder.bucketCount.setText(String.valueOf(shot.bucketCount));
-//                holder.viewCount.setText(String.valueOf(shot.viewCount));
-//            }
-//
-//            @Override
-//            public int getItemCount() {
-//                return data.size();
-//            }
-//        });
     }
 
     private List<Shot> mockData(int count) {

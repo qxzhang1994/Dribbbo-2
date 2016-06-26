@@ -1,14 +1,12 @@
 package com.jiuzhang.guojing.dribbbo;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class ShotDetailViewHolder extends RecyclerView.ViewHolder {
+public class ShotDetailViewHolder extends BaseViewHolder {
 
     @BindView(R.id.shot_title) TextView title;
     @BindView(R.id.shot_description) TextView description;
@@ -20,6 +18,5 @@ public class ShotDetailViewHolder extends RecyclerView.ViewHolder {
 
     public ShotDetailViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
     }
 }
