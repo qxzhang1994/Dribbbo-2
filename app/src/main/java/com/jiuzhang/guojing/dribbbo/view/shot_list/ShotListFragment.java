@@ -1,4 +1,4 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.view.base.InfiniteAdapter;
+import com.jiuzhang.guojing.dribbbo.view.base.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

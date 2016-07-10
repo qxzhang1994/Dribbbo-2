@@ -1,4 +1,4 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
 public class MainActivity extends AppCompatActivity {
 

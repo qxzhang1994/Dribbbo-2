@@ -1,8 +1,11 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
 public class ShotActivity extends AppCompatActivity {
 

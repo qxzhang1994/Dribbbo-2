@@ -1,4 +1,4 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.model;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

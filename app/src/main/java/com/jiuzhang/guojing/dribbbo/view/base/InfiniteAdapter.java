@@ -1,4 +1,4 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.view.ShotActivity;
+import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotViewHolder;
 
 import java.util.List;
 

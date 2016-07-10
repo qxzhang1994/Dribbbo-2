@@ -1,8 +1,11 @@
-package com.jiuzhang.guojing.dribbbo;
+package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.view.base.BaseViewHolder;
 
 import butterknife.BindView;
 
