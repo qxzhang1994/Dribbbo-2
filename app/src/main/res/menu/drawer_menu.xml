@@ -5,10 +5,19 @@
             android:id="@+id/drawer_item_1"
             android:checked="true"
             android:icon="@mipmap/ic_inbox_black_18dp"
-            android:title="@string/app_name" />
+            android:title="Home" />
         <item
             android:id="@+id/drawer_item_2"
+            android:checked="true"
             android:icon="@mipmap/ic_inbox_black_18dp"
-            android:title="@string/app_name" />
+            android:title="Following" />
+        <item
+            android:id="@+id/drawer_item_3"
+            android:icon="@mipmap/ic_inbox_black_18dp"
+            android:title="Likes" />
+        <item
+            android:id="@+id/drawer_item_4"
+            android:icon="@mipmap/ic_inbox_black_18dp"
+            android:title="Buckets" />
     </group>
 </menu>
