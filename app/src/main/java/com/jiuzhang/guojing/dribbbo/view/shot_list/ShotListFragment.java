@@ -2,7 +2,6 @@ package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.os.AsyncTaskCompat;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
@@ -55,16 +53,11 @@ public class ShotListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getContext(), "Refreshing!", Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 2000);
+                AsyncTaskCompat.executeParallel(new RefreshTask());
             }
         });
 
@@ -90,7 +83,27 @@ public class ShotListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Shot> shots) {
+            swipeRefreshLayout.setEnabled(true);
             adapter.append(shots);
+        }
+    }
+
+    private class RefreshTask extends AsyncTask<Void, Void, List<Shot>> {
+
+        @Override
+        protected List<Shot> doInBackground(Void... params) {
+            try {
+                return Dribbble.getShots(1);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Shot> shots) {
+            swipeRefreshLayout.setRefreshing(false);
+            adapter.setData(shots);
         }
     }
 
