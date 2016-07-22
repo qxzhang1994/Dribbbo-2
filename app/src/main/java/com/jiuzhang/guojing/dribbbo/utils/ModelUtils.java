@@ -35,4 +35,8 @@ public class ModelUtils {
         return gson.fromJson(json, typeToken.getType());
     }
 
+    public static <T> String toString(T object, TypeToken<T> typeToken) {
+        return gson.toJson(object, typeToken.getType());
+    }
+
 }

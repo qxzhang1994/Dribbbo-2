@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.google.gson.reflect.TypeToken;
-import com.jiuzhang.guojing.dribbbo.dribbble.auth.Auth;
+import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.model.User;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,14 +21,24 @@ public class Dribbble {
     private static final String API_URL = "https://api.dribbble.com/v1/";
 
     private static final String USER_END_POINT = API_URL + "user";
+    private static final String SHOTS_END_POINT = API_URL + "shots";
 
     private static final String SP_AUTH = "auth";
 
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String KEY_USER = "user";
 
+    private static OkHttpClient client = new OkHttpClient();
+
     private static String accessToken;
     private static User user;
+
+    private static Request buildGetRequest(String url) {
+        return new Request.Builder()
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .url(url)
+                .build();
+    }
 
     public static void init(@NonNull Context context) {
         accessToken = loadAccessToken(context);
@@ -61,13 +72,26 @@ public class Dribbble {
     }
 
     public static User getUser() throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .addHeader("Authorization", "Bearer " + accessToken)
-                .url(USER_END_POINT)
-                .build();
-        Response response = client.newCall(request).execute();
+        Response response = client
+                .newCall(buildGetRequest(USER_END_POINT))
+                .execute();
         return ModelUtils.toObject(response.body().string(), new TypeToken<User>(){});
+    }
+
+    public static List<Shot> getShots(int page) throws IOException {
+        String url = SHOTS_END_POINT + "?page=" + page + "&list=animated";
+        Response response = client
+                .newCall(buildGetRequest(url))
+                .execute();
+        return ModelUtils.toObject(response.body().string(), new TypeToken<List<Shot>>(){});
+    }
+
+    public static Shot getShot(@NonNull String id) throws IOException {
+        String url = SHOTS_END_POINT + "/" + id;
+        Response response = client
+                .newCall(buildGetRequest(url))
+                .execute();
+        return ModelUtils.toObject(response.body().string(), new TypeToken<Shot>(){});
     }
 
     public static void storeAccessToken(@NonNull Context context, String token) {

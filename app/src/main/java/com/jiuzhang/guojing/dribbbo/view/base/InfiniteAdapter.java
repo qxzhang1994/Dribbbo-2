@@ -9,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.view.ShotActivity;
+import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotViewHolder;
 
 import java.util.List;
@@ -39,14 +43,12 @@ public class InfiniteAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOADING) {
-            View view = LayoutInflater
-                    .from(context)
-                    .inflate(R.layout.list_item_loading, parent, false);
+            View view = LayoutInflater.from(context)
+                                      .inflate(R.layout.list_item_loading, parent, false);
             return new BaseViewHolder(view);
         } else {
-            View view = LayoutInflater
-                    .from(context)
-                    .inflate(R.layout.list_item_shot, parent, false);
+            View view = LayoutInflater.from(context)
+                                      .inflate(R.layout.list_item_shot, parent, false);
             return new ShotViewHolder(view);
         }
     }
@@ -62,6 +64,8 @@ public class InfiniteAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ShotActivity.class);
+                    intent.putExtra(ShotFragment.KEY_SHOT,
+                                    ModelUtils.toString(shot, new TypeToken<Shot>(){}));
                     context.startActivity(intent);
                 }
             });
@@ -71,10 +75,15 @@ public class InfiniteAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     Toast.makeText(v.getContext(), "bucket clicked", Toast.LENGTH_SHORT).show();
                 }
             });
-            shotViewHolder.image.setImageDrawable(context.getResources().getDrawable(R.mipmap.artboard_5));
-            shotViewHolder.likeCount.setText(String.valueOf(shot.likeCount));
-            shotViewHolder.bucketCount.setText(String.valueOf(shot.bucketCount));
-            shotViewHolder.viewCount.setText(String.valueOf(shot.viewCount));
+
+            shotViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
+            shotViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
+            shotViewHolder.viewCount.setText(String.valueOf(shot.views_count));
+
+            Glide.with(context)
+                 .load(shot.images.get(Shot.IMAGE_NORMAL))
+                 .into(shotViewHolder.image);
+
         } else {
             loadMoreListener.onLoadMore();
         }
@@ -96,6 +105,12 @@ public class InfiniteAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void append(@NonNull List<Shot> moreData) {
         data.addAll(moreData);
+        notifyDataSetChanged();
+    }
+
+    public void setData(@NonNull List<Shot> newData) {
+        data.clear();
+        data.addAll(newData);
         notifyDataSetChanged();
     }
 

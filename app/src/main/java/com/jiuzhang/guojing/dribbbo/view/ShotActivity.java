@@ -3,8 +3,12 @@ package com.jiuzhang.guojing.dribbbo.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
+import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
 public class ShotActivity extends AppCompatActivity {
@@ -14,10 +18,24 @@ public class ShotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_fragment);
 
-        ShotFragment shotFragment = new ShotFragment();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Shot shot = ModelUtils.toObject(getIntent().getStringExtra(ShotFragment.KEY_SHOT),
+                                        new TypeToken<Shot>(){});
+
+        ShotFragment shotFragment = ShotFragment.newInstance(shot);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, shotFragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

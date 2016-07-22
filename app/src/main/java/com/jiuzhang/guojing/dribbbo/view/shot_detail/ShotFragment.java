@@ -1,28 +1,30 @@
 package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
-import com.jiuzhang.guojing.dribbbo.model.Comment;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
-import com.jiuzhang.guojing.dribbbo.model.User;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShotFragment extends Fragment {
+
+    public static final String KEY_SHOT = "shot";
 
     private static final int VIEW_TYPE_SHOT_IMAGE = 0;
     private static final int VIEW_TYPE_SHOT_DETAIL = 1;
@@ -31,6 +33,15 @@ public class ShotFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Shot shot;
+
+    public static ShotFragment newInstance(@NonNull Shot shot) {
+        Bundle args = new Bundle();
+        args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
+
+        ShotFragment fragment = new ShotFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -44,7 +55,8 @@ public class ShotFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        shot = mockData();
+        shot = ModelUtils.toObject(getArguments().getString(KEY_SHOT),
+                                   new TypeToken<Shot>(){});
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new RecyclerView.Adapter() {
@@ -75,16 +87,25 @@ public class ShotFragment extends Fragment {
                 switch (viewType) {
                     case VIEW_TYPE_SHOT_IMAGE:
                         ShotImageViewHolder shotImageViewHolder = (ShotImageViewHolder) holder;
-                        shotImageViewHolder.image.setImageDrawable(getResources().getDrawable(R.mipmap.artboard_5));
+                        Glide.with(getContext())
+                             .load(shot.images.get(Shot.IMAGE_HIDPI))
+                             .into(shotImageViewHolder.image);
                         break;
                     case VIEW_TYPE_SHOT_DETAIL:
                         ShotDetailViewHolder shotDetailViewHolder = (ShotDetailViewHolder) holder;
                         shotDetailViewHolder.title.setText(shot.title);
-                        shotDetailViewHolder.description.setText(shot.description);
-                        shotDetailViewHolder.authorName.setText(shot.author.name);
-                        shotDetailViewHolder.likeCount.setText(String.valueOf(shot.likeCount));
-                        shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.bucketCount));
-                        shotDetailViewHolder.viewCount.setText(String.valueOf(shot.viewCount));
+                        shotDetailViewHolder.authorName.setText(shot.user.name);
+
+                        shotDetailViewHolder.description.setText(Html.fromHtml(shot.description));
+                        shotDetailViewHolder.description.setMovementMethod(LinkMovementMethod.getInstance());
+
+                        shotDetailViewHolder.likeCount.setText(String.valueOf(shot.likes_count));
+                        shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
+                        shotDetailViewHolder.viewCount.setText(String.valueOf(shot.views_count));
+
+                        Glide.with(getContext())
+                            .load(shot.user.avatar_url)
+                            .into(shotDetailViewHolder.authorPicture);
 
                         shotDetailViewHolder.likeCount.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -99,19 +120,12 @@ public class ShotFragment extends Fragment {
                             }
                         });
                         break;
-                    case VIEW_TYPE_SHOT_COMMENT:
-                        final Comment comment = shot.comments.get(position - 2);
-                        ShotCommentViewHolder shotCommentViewHolder = (ShotCommentViewHolder) holder;
-                        shotCommentViewHolder.authorName.setText(comment.author.name);
-                        shotCommentViewHolder.content.setText(comment.content);
-                        shotCommentViewHolder.likeCount.setText(String.valueOf(comment.likeCount));
-                        break;
                 }
             }
 
             @Override
             public int getItemCount() {
-                return 5;
+                return 2;
             }
 
             @Override
@@ -125,45 +139,5 @@ public class ShotFragment extends Fragment {
                 }
             }
         });
-    }
-
-    private Shot mockData() {
-        User author = new User();
-        author.name = "Jing Guo";
-        author.profilePictureUrl = "https://d13yacurqjgara.cloudfront.net/users/536/avatars/normal/2f7475306c01c1bbaf344ba9644725ad.png?1458737015";
-
-        List<Comment> comments = new ArrayList<>();
-        Comment comment1 = new Comment();
-        comment1.author = author;
-        comment1.content = "comment content";
-        comment1.createdAt = new Date();
-        comment1.likeCount = 3;
-        comments.add(comment1);
-
-        Comment comment2 = new Comment();
-        comment2.author = author;
-        comment2.content = "comment2 content comment2 content comment2 content comment2 content comment2 content";
-        comment2.createdAt = new Date();
-        comment2.likeCount = 30;
-        comments.add(comment2);
-
-        Comment comment3 = new Comment();
-        comment3.author = author;
-        comment3.content = "comment3 content";
-        comment3.createdAt = new Date();
-        comment3.likeCount = 300;
-        comments.add(comment3);
-
-        Shot shot = new Shot();
-        shot.title = "Amazing shot";
-        shot.imageUrl = "https://d13yacurqjgara.cloudfront.net/users/536/screenshots/2766763/artboard_5.png";
-        shot.description = "shot desc\nshot desc\nshot desc shot desc shot desc shot desc shot desc shot desc ";
-        shot.likeCount = 100;
-        shot.viewCount = 1000;
-        shot.bucketCount = 10;
-        shot.author = author;
-        shot.comments = comments;
-
-        return shot;
     }
 }
