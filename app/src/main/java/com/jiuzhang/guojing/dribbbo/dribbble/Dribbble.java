@@ -3,6 +3,7 @@ package com.jiuzhang.guojing.dribbbo.dribbble;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 
 import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
@@ -10,10 +11,13 @@ import com.jiuzhang.guojing.dribbbo.model.User;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Dribbble {
@@ -37,6 +41,22 @@ public class Dribbble {
         return new Request.Builder()
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .url(url)
+                .build();
+    }
+
+    private static Request buildPostRequest(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
+
+    private static Request buildDeleteRequest(String url) {
+        return new Request.Builder()
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .url(url)
+                .delete()
                 .build();
     }
 
@@ -79,7 +99,7 @@ public class Dribbble {
     }
 
     public static List<Shot> getShots(int page) throws IOException {
-        String url = SHOTS_END_POINT + "?page=" + page + "&list=animated";
+        String url = SHOTS_END_POINT + "?page=" + page;
         Response response = client
                 .newCall(buildGetRequest(url))
                 .execute();
@@ -92,6 +112,38 @@ public class Dribbble {
                 .newCall(buildGetRequest(url))
                 .execute();
         return ModelUtils.toObject(response.body().string(), new TypeToken<Shot>(){});
+    }
+
+    public static void likeShot(@NonNull String id) throws IOException {
+        String url = SHOTS_END_POINT + "/" + id + "/like";
+        Response response = client.newCall(buildPostRequest(url, new FormBody.Builder().build()))
+                                  .execute();
+        if (response.code() != HttpURLConnection.HTTP_CREATED) {
+            throw new IOException(response.message());
+        }
+    }
+
+    public static void unlikeShot(@NonNull String id) throws IOException {
+        String url = SHOTS_END_POINT + "/" + id + "/like";
+        Response response = client.newCall(buildDeleteRequest(url))
+                                  .execute();
+        if (response.code() != HttpURLConnection.HTTP_NO_CONTENT) {
+            throw new IOException(response.message());
+        }
+    }
+
+    public static boolean isLikingShot(@NonNull String id) throws IOException {
+        String url = SHOTS_END_POINT + "/" + id + "/like";
+        Response response = client.newCall(buildGetRequest(url))
+                                  .execute();
+        switch (response.code()) {
+            case HttpURLConnection.HTTP_OK:
+                return true;
+            case HttpURLConnection.HTTP_NOT_FOUND:
+                return false;
+            default:
+                throw new IOException(response.message());
+        }
     }
 
     public static void storeAccessToken(@NonNull Context context, String token) {

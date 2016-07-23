@@ -1,9 +1,14 @@
 package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -16,8 +21,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
+import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,11 +41,9 @@ public class ShotFragment extends Fragment {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Shot shot;
+    private boolean isLiking;
 
-    public static ShotFragment newInstance(@NonNull Shot shot) {
-        Bundle args = new Bundle();
-        args.putString(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
-
+    public static ShotFragment newInstance(@NonNull Bundle args) {
         ShotFragment fragment = new ShotFragment();
         fragment.setArguments(args);
         return fragment;
@@ -119,6 +125,21 @@ public class ShotFragment extends Fragment {
                                 Toast.makeText(getContext(), "Bucket count clicked", Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                        shotDetailViewHolder.likeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!isLiking) {
+                                    isLiking = true;
+                                    AsyncTaskCompat.executeParallel(new LikeTask(shot.id, !shot.liked));
+                                }
+                            }
+                        });
+
+                        Drawable likeDrawable = shot.liked
+                                ? getResources().getDrawable(R.mipmap.ic_favorite_black_18dp)
+                                : getResources().getDrawable(R.mipmap.ic_favorite_border_black_18dp);
+                        shotDetailViewHolder.likeButton.setImageDrawable(likeDrawable);
                         break;
                 }
             }
@@ -139,5 +160,46 @@ public class ShotFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private class LikeTask extends AsyncTask<Void, Void, String> {
+
+        private String id;
+        private boolean like;
+
+        public LikeTask(String id, boolean like) {
+            this.id = id;
+            this.like = like;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                if (like) {
+                    Dribbble.likeShot(id);
+                } else {
+                    Dribbble.unlikeShot(id);
+                }
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String errorMsg) {
+            isLiking = false;
+
+            if (errorMsg == null) {
+                shot.liked = like;
+                shot.likes_count += like ? 1 : -1;
+                recyclerView.getAdapter().notifyDataSetChanged();
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(KEY_SHOT, ModelUtils.toString(shot, new TypeToken<Shot>(){}));
+                getActivity().setResult(Activity.RESULT_OK, resultIntent);
+            }
+        }
     }
 }

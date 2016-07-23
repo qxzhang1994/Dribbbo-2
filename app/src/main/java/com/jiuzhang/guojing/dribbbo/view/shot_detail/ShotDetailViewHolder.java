@@ -1,6 +1,7 @@
 package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jiuzhang.guojing.dribbbo.R;
@@ -18,6 +19,8 @@ public class ShotDetailViewHolder extends BaseViewHolder {
     @BindView(R.id.shot_like_count) TextView likeCount;
     @BindView(R.id.shot_view_count) TextView viewCount;
     @BindView(R.id.shot_bucket_count) TextView bucketCount;
+    @BindView(R.id.shot_action_like) ImageButton likeButton;
+    @BindView(R.id.shot_action_bucket) ImageButton bucketButton;
 
     public ShotDetailViewHolder(View itemView) {
         super(itemView);

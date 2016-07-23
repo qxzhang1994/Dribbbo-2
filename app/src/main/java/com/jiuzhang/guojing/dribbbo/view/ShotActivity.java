@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
-import com.jiuzhang.guojing.dribbbo.model.Shot;
-import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
 public class ShotActivity extends AppCompatActivity {
@@ -20,14 +17,13 @@ public class ShotActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Shot shot = ModelUtils.toObject(getIntent().getStringExtra(ShotFragment.KEY_SHOT),
-                                        new TypeToken<Shot>(){});
-
-        ShotFragment shotFragment = ShotFragment.newInstance(shot);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, shotFragment)
-                .commit();
+        if (savedInstanceState == null) {
+            ShotFragment shotFragment = ShotFragment.newInstance(getIntent().getExtras());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, shotFragment)
+                    .commit();
+        }
     }
 
     @Override

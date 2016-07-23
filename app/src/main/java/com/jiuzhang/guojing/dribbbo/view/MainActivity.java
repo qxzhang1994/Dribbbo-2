@@ -45,11 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
         setupDrawerHeader();
 
-        ShotListFragment shotListFragment = new ShotListFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, shotListFragment)
-                .commit();
+        if (savedInstanceState == null) {
+            ShotListFragment shotListFragment = new ShotListFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, shotListFragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && requestCode == Auth.REQ_CODE) {
             final String authCode = data.getStringExtra(AuthActivity.KEY_CODE);
             new Thread(new Runnable() {
