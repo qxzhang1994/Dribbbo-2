@@ -97,6 +97,7 @@ public class InfiniteAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             Glide.with(context)
                  .load(shot.images.get(Shot.IMAGE_NORMAL))
+                 .placeholder(shotListFragment.getResources().getDrawable(R.drawable.shot_placeholder))
                  .into(shotViewHolder.image);
 
             shotViewHolder.likeCount.setCompoundDrawablesWithIntrinsicBounds(
