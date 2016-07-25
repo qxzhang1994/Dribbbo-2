@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
+import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.Auth;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.AuthActivity;
 import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
@@ -43,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         );
         drawerLayout.setDrawerListener(drawerToggle);
 
-        setupDrawerHeader();
+        setupDrawer(drawerLayout);
 
         if (savedInstanceState == null) {
-            ShotListFragment shotListFragment = new ShotListFragment();
+            ShotListFragment shotListFragment = ShotListFragment.newInstance(false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, shotListFragment)
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
 
                         finish();
-                    } catch (IOException e) {
+                    } catch (IOException | DribbbleException e) {
                         e.printStackTrace();
                     }
                 }
@@ -99,8 +100,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDrawerHeader() {
+    private void setupDrawer(final DrawerLayout drawerLayout) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);
+
+        // header
         View headerView = navigationView.inflateHeaderView(Dribbble.isLoggedIn()
                 ? R.layout.nav_header_logged_in
                 : R.layout.nav_header);
@@ -129,5 +132,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // list
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.isChecked()) {
+                    drawerLayout.closeDrawers();
+                    return true;
+                }
+
+                boolean result = false;
+                switch (item.getItemId()) {
+                    case R.id.drawer_item_home:
+                        ShotListFragment shotListFragment = ShotListFragment.newInstance(false);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, shotListFragment)
+                                .commit();
+                        result = true;
+                        break;
+                    case R.id.drawer_item_likes:
+                        ShotListFragment likedListFragment = ShotListFragment.newInstance(true);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, likedListFragment)
+                                .commit();
+                        result = true;
+                        break;
+                }
+
+                drawerLayout.closeDrawers();
+
+                return result;
+            }
+        });
     }
 }

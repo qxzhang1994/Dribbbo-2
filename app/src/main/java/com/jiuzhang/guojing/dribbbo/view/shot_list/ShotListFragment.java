@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,13 +19,14 @@ import android.view.ViewGroup;
 import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
+import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
+import com.jiuzhang.guojing.dribbbo.view.base.DribbbleTask;
 import com.jiuzhang.guojing.dribbbo.view.base.InfiniteAdapter;
 import com.jiuzhang.guojing.dribbbo.view.base.SpaceItemDecoration;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +38,12 @@ import butterknife.ButterKnife;
 public class ShotListFragment extends Fragment {
 
     public static final int REQ_CODE_SHOT = 100;
+    public static final String KEY_LIKED_LIST = "likedList";
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_container) SwipeRefreshLayout swipeRefreshLayout;
+
+    private boolean isLikedList;
 
     private InfiniteAdapter adapter;
 
@@ -53,6 +58,15 @@ public class ShotListFragment extends Fragment {
             }
         }
     };
+
+    public static ShotListFragment newInstance(boolean isLikedList) {
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_LIKED_LIST, isLikedList);
+
+        ShotListFragment fragment = new ShotListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public ShotListFragment() {
         likeTasks = new HashSet<>();
@@ -87,6 +101,8 @@ public class ShotListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        isLikedList = getArguments().getBoolean(KEY_LIKED_LIST);
+
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -123,24 +139,27 @@ public class ShotListFragment extends Fragment {
         }
     }
 
-    private class LoadShotsTask extends AsyncTask<Void, Void, List<Shot>> {
+    private class LoadShotsTask extends DribbbleTask<Void, Void, List<Shot>> {
 
         @Override
-        protected List<Shot> doInBackground(Void... params) {
-            try {
-                return Dribbble.getShots(adapter.getItemCount() / 12 + 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+        protected List<Shot> doJob(Void... params) throws DribbbleException {
+            int page = adapter.getData().size() / 12 + 1;
+            return isLikedList
+                    ? Dribbble.getLikedShots(page)
+                    : Dribbble.getShots(page);
         }
 
         @Override
-        protected void onPostExecute(List<Shot> shots) {
+        protected void onSuccess(List<Shot> shots) {
             swipeRefreshLayout.setEnabled(true);
             adapter.append(shots);
 
-            runCheckLikeTasks(shots);
+//            runCheckLikeTasks(shots);
+        }
+
+        @Override
+        protected void onFailed(DribbbleException e) {
+            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -149,8 +168,10 @@ public class ShotListFragment extends Fragment {
         @Override
         protected List<Shot> doInBackground(Void... params) {
             try {
-                return Dribbble.getShots(1);
-            } catch (IOException e) {
+                return isLikedList
+                        ? Dribbble.getLikedShots(1)
+                        : Dribbble.getShots(1);
+            } catch (DribbbleException e) {
                 e.printStackTrace();
                 return null;
             }
@@ -161,7 +182,7 @@ public class ShotListFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
             adapter.setData(shots);
 
-            runCheckLikeTasks(shots);
+//            runCheckLikeTasks(shots);
         }
     }
 
@@ -184,7 +205,7 @@ public class ShotListFragment extends Fragment {
                     Dribbble.unlikeShot(id);
                 }
                 return null;
-            } catch (IOException e) {
+            } catch (DribbbleException e) {
                 e.printStackTrace();
                 return e.getMessage();
             }
@@ -223,7 +244,7 @@ public class ShotListFragment extends Fragment {
         protected Boolean doInBackground(Void... params) {
             try {
                 return Dribbble.isLikingShot(id);
-            } catch (IOException e) {
+            } catch (DribbbleException e) {
                 return null;
             }
         }

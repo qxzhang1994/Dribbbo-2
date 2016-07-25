@@ -31,6 +31,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
+import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.utils.PermissionUtils;
@@ -213,7 +214,7 @@ public class ShotFragment extends Fragment {
                     Dribbble.unlikeShot(id);
                 }
                 return null;
-            } catch (IOException e) {
+            } catch (DribbbleException e) {
                 e.printStackTrace();
                 return e.getMessage();
             }
