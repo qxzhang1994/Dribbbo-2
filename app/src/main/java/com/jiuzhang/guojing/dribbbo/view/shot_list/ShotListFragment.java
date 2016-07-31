@@ -2,7 +2,6 @@ package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -28,9 +27,7 @@ import com.jiuzhang.guojing.dribbbo.view.base.SpaceItemDecoration;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,10 +42,7 @@ public class ShotListFragment extends Fragment {
 
     private boolean isLikedList;
 
-    private InfiniteAdapter adapter;
-
-    private Set<String> likeTasks;
-    private Set<String> unlikeTasks;
+    private ShotListAdapter adapter;
 
     private InfiniteAdapter.LoadMoreListener onLoadMore = new InfiniteAdapter.LoadMoreListener() {
         @Override
@@ -68,11 +62,6 @@ public class ShotListFragment extends Fragment {
         return fragment;
     }
 
-    public ShotListFragment() {
-        likeTasks = new HashSet<>();
-        unlikeTasks = new HashSet<>();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQ_CODE_SHOT && resultCode == Activity.RESULT_OK) {
@@ -80,7 +69,6 @@ public class ShotListFragment extends Fragment {
                                                    new TypeToken<Shot>(){});
             for (Shot shot : adapter.getData()) {
                 if (TextUtils.equals(shot.id, updatedShot.id)) {
-                    shot.liked = updatedShot.liked;
                     shot.likes_count = updatedShot.likes_count;
                     adapter.notifyDataSetChanged();
                     return;
@@ -115,35 +103,15 @@ public class ShotListFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(
                 getResources().getDimensionPixelSize(R.dimen.spacing_medium)));
 
-        adapter = new InfiniteAdapter(getContext(), this, new ArrayList<Shot>(), onLoadMore);
+        adapter = new ShotListAdapter(this, new ArrayList<Shot>(), onLoadMore);
         recyclerView.setAdapter(adapter);
-    }
-
-    public void likeShot(String id) {
-        if (!likeTasks.contains(id)) {
-            likeTasks.add(id);
-            AsyncTaskCompat.executeParallel(new LikeTask(id, true));
-        }
-    }
-
-    public void unlikeShot(String id) {
-        if (!unlikeTasks.contains(id)) {
-            unlikeTasks.add(id);
-            AsyncTaskCompat.executeParallel(new LikeTask(id, false));
-        }
-    }
-
-    private void runCheckLikeTasks(List<Shot> shots) {
-        for (Shot shot : shots) {
-            AsyncTaskCompat.executeParallel(new CheckLikeTask(shot.id));
-        }
     }
 
     private class LoadShotsTask extends DribbbleTask<Void, Void, List<Shot>> {
 
         @Override
         protected List<Shot> doJob(Void... params) throws DribbbleException {
-            int page = adapter.getData().size() / 12 + 1;
+            int page = adapter.getData().size() / Dribbble.COUNT_PER_LOAD + 1;
             return isLikedList
                     ? Dribbble.getLikedShots(page)
                     : Dribbble.getShots(page);
@@ -151,10 +119,12 @@ public class ShotListFragment extends Fragment {
 
         @Override
         protected void onSuccess(List<Shot> shots) {
+            if (shots.size() < Dribbble.COUNT_PER_LOAD) {
+                adapter.setShowLoading(false);
+            }
+
             swipeRefreshLayout.setEnabled(true);
             adapter.append(shots);
-
-//            runCheckLikeTasks(shots);
         }
 
         @Override
@@ -163,103 +133,24 @@ public class ShotListFragment extends Fragment {
         }
     }
 
-    private class RefreshTask extends AsyncTask<Void, Void, List<Shot>> {
+    private class RefreshTask extends DribbbleTask<Void, Void, List<Shot>> {
 
         @Override
-        protected List<Shot> doInBackground(Void... params) {
-            try {
-                return isLikedList
-                        ? Dribbble.getLikedShots(1)
-                        : Dribbble.getShots(1);
-            } catch (DribbbleException e) {
-                e.printStackTrace();
-                return null;
-            }
+        protected List<Shot> doJob(Void... params) throws DribbbleException {
+            return isLikedList
+                    ? Dribbble.getLikedShots(1)
+                    : Dribbble.getShots(1);
         }
 
         @Override
-        protected void onPostExecute(List<Shot> shots) {
+        protected void onSuccess(List<Shot> shots) {
             swipeRefreshLayout.setRefreshing(false);
             adapter.setData(shots);
-
-//            runCheckLikeTasks(shots);
-        }
-    }
-
-    private class LikeTask extends AsyncTask<Void, Void, String> {
-
-        private String id;
-        private boolean like;
-
-        public LikeTask(String id, boolean like) {
-            this.id = id;
-            this.like = like;
         }
 
         @Override
-        protected String doInBackground(Void... params) {
-            try {
-                if (like) {
-                    Dribbble.likeShot(id);
-                } else {
-                    Dribbble.unlikeShot(id);
-                }
-                return null;
-            } catch (DribbbleException e) {
-                e.printStackTrace();
-                return e.getMessage();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String errorMsg) {
-            if (like) {
-                likeTasks.remove(id);
-            } else {
-                unlikeTasks.remove(id);
-            }
-
-            if (errorMsg == null) {
-                for (Shot shot : adapter.getData()) {
-                    if (TextUtils.equals(shot.id, id)) {
-                        shot.liked = like;
-                        shot.likes_count += like ? 1 : -1;
-                        adapter.notifyDataSetChanged();
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private class CheckLikeTask extends AsyncTask<Void, Void, Boolean> {
-
-        private String id;
-
-        public CheckLikeTask(String id) {
-            this.id = id;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                return Dribbble.isLikingShot(id);
-            } catch (DribbbleException e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result != null) {
-                for (Shot shot : adapter.getData()) {
-                    if (TextUtils.equals(shot.id, id)) {
-                        shot.liked = result;
-                        adapter.notifyDataSetChanged();
-                        return;
-                    }
-                }
-            }
+        protected void onFailed(DribbbleException e) {
+            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 

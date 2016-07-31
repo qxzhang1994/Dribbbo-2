@@ -27,6 +27,8 @@ public class Dribbble {
 
     private static final String TAG = "Dribbble API";
 
+    public static final int COUNT_PER_LOAD = 12;
+
     private static final String API_URL = "https://api.dribbble.com/v1/";
 
     private static final String USER_END_POINT = API_URL + "user";
@@ -107,7 +109,7 @@ public class Dribbble {
     }
 
     public static void init(@NonNull Context context) {
-        accessToken = "0e0ff6843582b10d12d6bd82bd2a46cff8788e94efc3a0232383e1138753453d";//loadAccessToken(context);
+        accessToken = loadAccessToken(context);
         if (accessToken != null) {
             user = loadUser(context);
         }
