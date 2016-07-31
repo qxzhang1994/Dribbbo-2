@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.jiuzhang.guojing.dribbbo.model.Bucket;
 import com.jiuzhang.guojing.dribbbo.model.Like;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.model.User;
@@ -32,6 +33,7 @@ public class Dribbble {
     private static final String API_URL = "https://api.dribbble.com/v1/";
 
     private static final String USER_END_POINT = API_URL + "user";
+    private static final String USERS_END_POINT = API_URL + "users";
     private static final String SHOTS_END_POINT = API_URL + "shots";
 
     private static final String SP_AUTH = "auth";
@@ -42,6 +44,7 @@ public class Dribbble {
     private static final TypeToken<User> USER_TYPE = new TypeToken<User>(){};
     private static final TypeToken<Shot> SHOT_TYPE = new TypeToken<Shot>(){};
     private static final TypeToken<List<Shot>> SHOT_LIST_TYPE = new TypeToken<List<Shot>>(){};
+    private static final TypeToken<List<Bucket>> BUCKET_LIST_TYPE = new TypeToken<List<Bucket>>(){};
     private static final TypeToken<Like> LIKE_TYPE = new TypeToken<Like>(){};
     private static final TypeToken<List<Like>> LIKE_LIST_TYPE = new TypeToken<List<Like>>(){};
 
@@ -193,6 +196,16 @@ public class Dribbble {
             default:
                 throw new DribbbleException(response.message());
         }
+    }
+
+    public static List<Bucket> getUserBuckets(int page) throws DribbbleException {
+        String url = USER_END_POINT + "/" + "buckets?page=" + page;
+        return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
+    }
+
+    public static List<Bucket> getUserBuckets(@NonNull String userId, int page) throws DribbbleException {
+        String url = USERS_END_POINT + "/" + userId + "/buckets?page=" + page;
+        return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
     }
 
     public static void storeAccessToken(@NonNull Context context, String token) {

@@ -9,6 +9,8 @@
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="shot_action_icon_size">32dp</dimen>
     <dimen name="shot_action_drawable_top_icon_padding">7dp</dimen>
 

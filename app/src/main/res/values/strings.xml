@@ -5,4 +5,10 @@
     <string name="close_drawer">close drawer</string>
 
     <string name="share">Share</string>
+
+    <string name="new_bucket_title">New bucket</string>
+    <string name="new_bucket_create">Create</string>
+    <string name="new_bucket_cancel">Cancel</string>
+    <string name="new_bucket_name">Bucket name</string>
+    <string name="new_bucket_descripiton">Bucket decription</string>
 </resources>

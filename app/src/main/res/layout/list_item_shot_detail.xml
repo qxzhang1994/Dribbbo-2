@@ -80,7 +80,7 @@
             android:gravity="center"
             android:paddingTop="@dimen/shot_action_drawable_top_icon_padding"
             android:paddingBottom="@dimen/shot_action_drawable_top_icon_padding"
-            android:drawableTop="@drawable/vector_drawable_ic_share_black_18dp"
+            android:drawableTop="@drawable/ic_share_black_18dp"
             android:drawablePadding="@dimen/shot_action_drawable_top_icon_padding"
             android:background="?attr/selectableItemBackground"
             android:text="@string/share" />

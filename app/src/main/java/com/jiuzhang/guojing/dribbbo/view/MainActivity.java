@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.Auth;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.AuthActivity;
+import com.jiuzhang.guojing.dribbbo.model.Bucket;
+import com.jiuzhang.guojing.dribbbo.view.bucket_list.BucketListFragment;
 import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
 import java.io.IOException;
@@ -133,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // list
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -142,29 +144,30 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
 
-                boolean result = false;
+                Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.drawer_item_home:
-                        ShotListFragment shotListFragment = ShotListFragment.newInstance(false);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, shotListFragment)
-                                .commit();
-                        result = true;
+                        fragment = ShotListFragment.newInstance(false);
+                        break;
+                    case R.id.drawer_item_buckets:
+                        fragment = BucketListFragment.newInstance(null, true);
                         break;
                     case R.id.drawer_item_likes:
-                        ShotListFragment likedListFragment = ShotListFragment.newInstance(true);
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, likedListFragment)
-                                .commit();
-                        result = true;
+                        fragment = ShotListFragment.newInstance(true);
                         break;
                 }
 
                 drawerLayout.closeDrawers();
 
-                return result;
+                if (fragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                    return true;
+                }
+
+                return false;
             }
         });
     }
