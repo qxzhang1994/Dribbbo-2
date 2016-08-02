@@ -18,7 +18,6 @@ import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.Auth;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.AuthActivity;
-import com.jiuzhang.guojing.dribbbo.model.Bucket;
 import com.jiuzhang.guojing.dribbbo.view.bucket_list.BucketListFragment;
 import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
@@ -50,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer(drawerLayout);
 
         if (savedInstanceState == null) {
-            ShotListFragment shotListFragment = ShotListFragment.newInstance(false);
+            ShotListFragment shotListFragment = ShotListFragment.newInstance(
+                    ShotListFragment.LIST_TYPE_POPULAR);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, shotListFragment)
@@ -147,13 +147,13 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.drawer_item_home:
-                        fragment = ShotListFragment.newInstance(false);
+                        fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_POPULAR);
                         break;
                     case R.id.drawer_item_buckets:
                         fragment = BucketListFragment.newInstance(null, true);
                         break;
                     case R.id.drawer_item_likes:
-                        fragment = ShotListFragment.newInstance(true);
+                        fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_LIKED);
                         break;
                 }
 

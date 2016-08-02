@@ -1,6 +1,5 @@
 package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
-import com.jiuzhang.guojing.dribbbo.view.ShotActivity;
+import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotActivity;
 import com.jiuzhang.guojing.dribbbo.view.base.BaseViewHolder;
 import com.jiuzhang.guojing.dribbbo.view.base.InfiniteAdapter;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;

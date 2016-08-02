@@ -3,6 +3,7 @@ package com.jiuzhang.guojing.dribbbo.dribbble;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
@@ -35,15 +36,20 @@ public class Dribbble {
     private static final String USER_END_POINT = API_URL + "user";
     private static final String USERS_END_POINT = API_URL + "users";
     private static final String SHOTS_END_POINT = API_URL + "shots";
+    private static final String BUCKETS_END_POINT = API_URL + "buckets";
 
     private static final String SP_AUTH = "auth";
 
     private static final String KEY_ACCESS_TOKEN = "access_token";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_SHOT_ID = "shot_id";
     private static final String KEY_USER = "user";
 
     private static final TypeToken<User> USER_TYPE = new TypeToken<User>(){};
     private static final TypeToken<Shot> SHOT_TYPE = new TypeToken<Shot>(){};
     private static final TypeToken<List<Shot>> SHOT_LIST_TYPE = new TypeToken<List<Shot>>(){};
+    private static final TypeToken<Bucket> BUCKET_TYPE = new TypeToken<Bucket>(){};
     private static final TypeToken<List<Bucket>> BUCKET_LIST_TYPE = new TypeToken<List<Bucket>>(){};
     private static final TypeToken<Like> LIKE_TYPE = new TypeToken<Like>(){};
     private static final TypeToken<List<Like>> LIKE_LIST_TYPE = new TypeToken<List<Like>>(){};
@@ -74,9 +80,18 @@ public class Dribbble {
         return makeRequest(request);
     }
 
-    private static Response makePostRequest(String url, RequestBody requestBody) throws DribbbleException {
+    private static Response makePostRequest(String url,
+                                            RequestBody requestBody) throws DribbbleException {
         Request request = authRequestBuilder(url)
                 .post(requestBody)
+                .build();
+        return makeRequest(request);
+    }
+
+    private static Response makePutRequest(String url,
+                                           RequestBody requestBody) throws DribbbleException {
+        Request request = authRequestBuilder(url)
+                .put(requestBody)
                 .build();
         return makeRequest(request);
     }
@@ -88,7 +103,16 @@ public class Dribbble {
         return makeRequest(request);
     }
 
-    private static <T> T parseResponse(Response response, TypeToken<T> typeToken) throws DribbbleException {
+    private static Response makeDeleteRequest(String url,
+                                              RequestBody requestBody) throws DribbbleException {
+        Request request = authRequestBuilder(url)
+                .delete(requestBody)
+                .build();
+        return makeRequest(request);
+    }
+
+    private static <T> T parseResponse(Response response,
+                                       TypeToken<T> typeToken) throws DribbbleException {
         String responseString;
         try {
             responseString = response.body().string();
@@ -105,7 +129,8 @@ public class Dribbble {
         }
     }
 
-    private static void checkStatusCode(Response response, int statusCode) throws DribbbleException {
+    private static void checkStatusCode(Response response,
+                                        int statusCode) throws DribbbleException {
         if (response.code() != statusCode) {
             throw new DribbbleException(response.message());
         }
@@ -122,7 +147,8 @@ public class Dribbble {
         return accessToken != null;
     }
 
-    public static void login(@NonNull Context context, String accessToken) throws DribbbleException {
+    public static void login(@NonNull Context context,
+                             @NonNull String accessToken) throws DribbbleException {
         Dribbble.accessToken = accessToken;
         storeAccessToken(context, accessToken);
 
@@ -203,12 +229,50 @@ public class Dribbble {
         return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
     }
 
-    public static List<Bucket> getUserBuckets(@NonNull String userId, int page) throws DribbbleException {
+    public static List<Bucket> getUserBuckets(@NonNull String userId,
+                                              int page) throws DribbbleException {
         String url = USERS_END_POINT + "/" + userId + "/buckets?page=" + page;
         return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
     }
 
-    public static void storeAccessToken(@NonNull Context context, String token) {
+    public static Bucket newBucket(@NonNull String name,
+                                   @NonNull String description) throws DribbbleException {
+        FormBody formBody = new FormBody.Builder()
+                .add(KEY_NAME, name)
+                .add(KEY_DESCRIPTION, description)
+                .build();
+        return parseResponse(makePostRequest(BUCKETS_END_POINT, formBody), BUCKET_TYPE);
+    }
+
+    public static void addBucketShot(@NonNull String bucketId,
+                                     @NonNull String shotId) throws DribbbleException {
+        String url = BUCKETS_END_POINT + "/" + bucketId + "/shots";
+        FormBody formBody = new FormBody.Builder()
+                .add(KEY_SHOT_ID, shotId)
+                .build();
+
+        Response response = makePutRequest(url, formBody);
+        checkStatusCode(response, HttpURLConnection.HTTP_NO_CONTENT);
+    }
+
+    public static void removeBucketShot(@NonNull String bucketId,
+                                        @NonNull String shotId) throws DribbbleException {
+        String url = BUCKETS_END_POINT + "/" + bucketId + "/shots";
+        FormBody formBody = new FormBody.Builder()
+                .add(KEY_SHOT_ID, shotId)
+                .build();
+
+        Response response = makeDeleteRequest(url, formBody);
+        checkStatusCode(response, HttpURLConnection.HTTP_NO_CONTENT);
+    }
+
+    public static List<Shot> getBucketShots(@NonNull String bucketId,
+                                              int page) throws DribbbleException {
+        String url = BUCKETS_END_POINT + "/" + bucketId + "/shots";
+        return parseResponse(makeGetRequest(url), SHOT_LIST_TYPE);
+    }
+
+    public static void storeAccessToken(@NonNull Context context, @Nullable String token) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences(
                 SP_AUTH, Context.MODE_PRIVATE);
         sp.edit().putString(KEY_ACCESS_TOKEN, token).apply();
@@ -220,7 +284,7 @@ public class Dribbble {
         return sp.getString(KEY_ACCESS_TOKEN, null);
     }
 
-    public static void storeUser(@NonNull Context context, User user) {
+    public static void storeUser(@NonNull Context context, @Nullable User user) {
         ModelUtils.save(context, KEY_USER, user);
     }
 

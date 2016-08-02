@@ -25,6 +25,7 @@ import com.jiuzhang.guojing.dribbbo.view.base.InfiniteAdapter;
 import com.jiuzhang.guojing.dribbbo.view.base.SpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -110,7 +111,7 @@ public class BucketListFragment extends Fragment {
             String bucketName = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_NAME);
             String bucketDescription = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_DESCRIPTION);
             if (!TextUtils.isEmpty(bucketName)) {
-                Snackbar.make(getView(), bucketName, Snackbar.LENGTH_LONG).show();
+                AsyncTaskCompat.executeParallel(new NewBucketTask(bucketName, bucketDescription));
             }
         }
     }
@@ -139,9 +140,38 @@ public class BucketListFragment extends Fragment {
 
             if (refresh) {
                 adapter.setData(buckets);
+                swipeRefreshLayout.setRefreshing(false);
             } else {
                 adapter.append(buckets);
             }
+
+            swipeRefreshLayout.setEnabled(true);
+        }
+
+        @Override
+        protected void onFailed(DribbbleException e) {
+            Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private class NewBucketTask extends DribbbleTask<Void, Void, Bucket> {
+
+        private String name;
+        private String description;
+
+        private NewBucketTask(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
+        @Override
+        protected Bucket doJob(Void... params) throws DribbbleException {
+            return Dribbble.newBucket(name, description);
+        }
+
+        @Override
+        protected void onSuccess(Bucket bucket) {
+            adapter.append(Collections.singletonList(bucket));
         }
 
         @Override
