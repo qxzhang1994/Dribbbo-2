@@ -8,4 +8,6 @@ public class Bucket {
     public String description;
     public int shots_count;
     public Date created_at;
+
+    public boolean isChoosing;
 }

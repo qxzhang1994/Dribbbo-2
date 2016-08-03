@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".view.shot_detail.ShotActivity" />
+        <activity android:name=".view.bucket_list.BucketListActivity" />
         <activity android:name=".view.bucket_list.BucketShotListActivity" />
 
         <activity android:name=".dribbble.auth.AuthActivity" />

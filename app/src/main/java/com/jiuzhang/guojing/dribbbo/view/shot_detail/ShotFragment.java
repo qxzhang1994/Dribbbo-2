@@ -35,6 +35,8 @@ import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.utils.PermissionUtils;
+import com.jiuzhang.guojing.dribbbo.view.bucket_list.BucketListActivity;
+import com.jiuzhang.guojing.dribbbo.view.bucket_list.BucketListFragment;
 
 import java.io.IOException;
 
@@ -161,6 +163,15 @@ public class ShotFragment extends Fragment {
                                     isLiking = true;
                                     AsyncTaskCompat.executeParallel(new LikeTask(shot.id, !shot.liked));
                                 }
+                            }
+                        });
+
+                        shotDetailViewHolder.bucketButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getContext(), BucketListActivity.class);
+                                intent.putExtra(BucketListFragment.KEY_CHOOSING_MODE, true);
+                                startActivity(intent);
                             }
                         });
 
