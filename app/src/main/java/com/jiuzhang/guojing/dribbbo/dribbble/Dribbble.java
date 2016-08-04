@@ -229,9 +229,36 @@ public class Dribbble {
         return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
     }
 
+    /**
+     * Will return all the buckets for the logged in user
+     * @return
+     * @throws DribbbleException
+     */
+    public static List<Bucket> getUserBuckets() throws DribbbleException {
+        String url = USER_END_POINT + "/" + "buckets?per_page=" + Integer.MAX_VALUE;
+        return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
+    }
+
     public static List<Bucket> getUserBuckets(@NonNull String userId,
                                               int page) throws DribbbleException {
         String url = USERS_END_POINT + "/" + userId + "/buckets?page=" + page;
+        return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
+    }
+
+    public static List<Bucket> getShotBuckets(@NonNull String shotId,
+                                              int page) throws DribbbleException {
+        String url = SHOTS_END_POINT + "/" + shotId + "/buckets?page=" + page;
+        return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
+    }
+
+    /**
+     * Will return all the buckets for a certain shot
+     * @param shotId
+     * @return
+     * @throws DribbbleException
+     */
+    public static List<Bucket> getShotBuckets(@NonNull String shotId) throws DribbbleException {
+        String url = SHOTS_END_POINT + "/" + shotId + "/buckets?per_page=" + Integer.MAX_VALUE;
         return parseResponse(makeGetRequest(url), BUCKET_LIST_TYPE);
     }
 

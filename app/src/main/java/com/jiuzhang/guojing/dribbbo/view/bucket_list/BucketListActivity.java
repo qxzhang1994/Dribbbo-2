@@ -7,6 +7,8 @@ import android.view.MenuItem;
 
 import com.jiuzhang.guojing.dribbbo.R;
 
+import java.util.ArrayList;
+
 public class BucketListActivity extends AppCompatActivity {
 
     @Override
@@ -21,8 +23,10 @@ public class BucketListActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             boolean isChoosingMode = getIntent().getExtras().getBoolean(
                     BucketListFragment.KEY_CHOOSING_MODE);
+            ArrayList<String> chosenBucketIds = getIntent().getExtras().getStringArrayList(
+                    BucketListFragment.KEY_COLLECTED_BUCKET_IDS);
             BucketListFragment bucketListFragment = BucketListFragment.newInstance(
-                    null, isChoosingMode);
+                    null, isChoosingMode, chosenBucketIds);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, bucketListFragment)

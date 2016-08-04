@@ -29,7 +29,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/spacing_large"
                 android:layout_toLeftOf="@+id/shot_like_count"
-                android:drawableLeft="@mipmap/ic_visibility_black_18dp"
+                android:drawableLeft="@drawable/ic_visibility_black_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 tools:text="12" />
 
@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/spacing_large"
                 android:layout_toLeftOf="@+id/shot_bucket_count"
-                android:drawableLeft="@mipmap/ic_favorite_black_18dp"
+                android:drawableLeft="@drawable/ic_favorite_black_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 android:text="78"
                 tools:text="78" />
@@ -52,7 +52,7 @@
                 android:layout_marginRight="@dimen/spacing_medium"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:drawableLeft="@mipmap/ic_inbox_black_18dp"
+                android:drawableLeft="@drawable/ic_inbox_black_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 android:text="78"
                 tools:text="78" />

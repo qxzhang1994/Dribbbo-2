@@ -18,7 +18,7 @@
             android:gravity="center"
             android:paddingTop="@dimen/shot_action_drawable_top_icon_padding"
             android:paddingBottom="@dimen/shot_action_drawable_top_icon_padding"
-            android:drawableTop="@mipmap/ic_visibility_black_18dp"
+            android:drawableTop="@drawable/ic_visibility_black_18dp"
             android:drawablePadding="@dimen/shot_action_drawable_top_icon_padding"
             tools:text="1000" />
 
@@ -33,7 +33,7 @@
                 android:id="@+id/shot_action_like"
                 android:layout_width="@dimen/shot_action_icon_size"
                 android:layout_height="@dimen/shot_action_icon_size"
-                android:src="@mipmap/ic_favorite_border_black_18dp"
+                android:src="@drawable/ic_favorite_border_black_18dp"
                 android:background="?attr/selectableItemBackground"/>
 
             <TextView
@@ -58,7 +58,7 @@
                 android:id="@+id/shot_action_bucket"
                 android:layout_width="@dimen/shot_action_icon_size"
                 android:layout_height="@dimen/shot_action_icon_size"
-                android:src="@mipmap/ic_inbox_black_18dp"
+                android:src="@drawable/ic_inbox_black_18dp"
                 android:background="?attr/selectableItemBackground" />
 
             <TextView

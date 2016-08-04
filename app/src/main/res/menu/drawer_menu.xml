@@ -4,20 +4,15 @@
         <item
             android:id="@+id/drawer_item_home"
             android:checked="true"
-            android:icon="@mipmap/ic_inbox_black_18dp"
+            android:icon="@drawable/ic_home_black_18px"
             android:title="Home" />
         <item
-            android:id="@+id/drawer_item_following"
-            android:checked="true"
-            android:icon="@mipmap/ic_inbox_black_18dp"
-            android:title="Following" />
-        <item
             android:id="@+id/drawer_item_likes"
-            android:icon="@mipmap/ic_inbox_black_18dp"
+            android:icon="@drawable/ic_favorite_black_18dp"
             android:title="Likes" />
         <item
             android:id="@+id/drawer_item_buckets"
-            android:icon="@mipmap/ic_inbox_black_18dp"
+            android:icon="@drawable/ic_inbox_black_18dp"
             android:title="Buckets" />
     </group>
 </menu>

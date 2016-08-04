@@ -13,6 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,7 +29,9 @@ import com.jiuzhang.guojing.dribbbo.view.base.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +40,8 @@ public class BucketListFragment extends Fragment {
 
     public static final String KEY_USER_ID = "user_id";
     public static final String KEY_CHOOSING_MODE = "choosing_mode";
+    public static final String KEY_CHOSEN_BUCKET_IDS = "chosen_bucket_ids";
+    public static final String KEY_COLLECTED_BUCKET_IDS = "collected_bucket_ids";
 
     public static final int REQ_CODE_NEW_BUCKET = 100;
 
@@ -46,6 +53,7 @@ public class BucketListFragment extends Fragment {
 
     private String userId;
     private boolean isChoosingMode;
+    private Set<String> collectedBucketIdSet;
 
     private InfiniteAdapter.LoadMoreListener onLoadMore = new InfiniteAdapter.LoadMoreListener() {
         @Override
@@ -55,14 +63,23 @@ public class BucketListFragment extends Fragment {
     };
 
     public static BucketListFragment newInstance(@Nullable String userId,
-                                                 boolean isChoosingMode) {
+                                                 boolean isChoosingMode,
+                                                 @Nullable ArrayList<String> chosenBucketIds) {
         Bundle args = new Bundle();
         args.putString(KEY_USER_ID, userId);
         args.putBoolean(KEY_CHOOSING_MODE, isChoosingMode);
+        args.putStringArrayList(KEY_COLLECTED_BUCKET_IDS, chosenBucketIds);
 
         BucketListFragment fragment = new BucketListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -77,9 +94,21 @@ public class BucketListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        userId = getArguments().getString(KEY_USER_ID);
-        isChoosingMode = getArguments().getBoolean(KEY_CHOOSING_MODE);
+        // get arguments
+        final Bundle args = getArguments();
+        userId = args.getString(KEY_USER_ID);
+        isChoosingMode = args.getBoolean(KEY_CHOOSING_MODE);
 
+        if (isChoosingMode) {
+            List<String> chosenBucketIdList = args.getStringArrayList(KEY_COLLECTED_BUCKET_IDS);
+            if (chosenBucketIdList != null) {
+                collectedBucketIdSet = new HashSet<>(chosenBucketIdList);
+            }
+        } else {
+            collectedBucketIdSet = new HashSet<>();
+        }
+
+        // init UI
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -103,6 +132,31 @@ public class BucketListFragment extends Fragment {
                 dialogFragment.show(getFragmentManager(), NewBucketDialogFragment.TAG);
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (isChoosingMode) {
+            inflater.inflate(R.menu.bucket_list_choose_mode_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.save) {
+            ArrayList<String> chosenBucketIds = new ArrayList<>();
+            for (Bucket bucket : adapter.getData()) {
+                if (bucket.isChoosing) {
+                    chosenBucketIds.add(bucket.id);
+                }
+            }
+
+            Intent result = new Intent();
+            result.putStringArrayListExtra(KEY_CHOSEN_BUCKET_IDS, chosenBucketIds);
+            getActivity().setResult(Activity.RESULT_OK, result);
+            getActivity().finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -138,6 +192,12 @@ public class BucketListFragment extends Fragment {
                 adapter.setShowLoading(false);
             }
 
+            for (Bucket bucket : buckets) {
+                if (collectedBucketIdSet.contains(bucket.id)) {
+                    bucket.isChoosing = true;
+                }
+            }
+
             if (refresh) {
                 adapter.setData(buckets);
                 swipeRefreshLayout.setRefreshing(false);
@@ -171,6 +231,7 @@ public class BucketListFragment extends Fragment {
 
         @Override
         protected void onSuccess(Bucket bucket) {
+            bucket.isChoosing = true;
             adapter.append(Collections.singletonList(bucket));
         }
 

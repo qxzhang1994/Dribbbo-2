@@ -26,4 +26,5 @@ public class Shot {
     public User user;
 
     public boolean liked;
+    public boolean bucketed;
 }

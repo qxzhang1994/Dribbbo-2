@@ -86,6 +86,7 @@ public class ShotListFragment extends Fragment {
             for (Shot shot : adapter.getData()) {
                 if (TextUtils.equals(shot.id, updatedShot.id)) {
                     shot.likes_count = updatedShot.likes_count;
+                    shot.buckets_count = updatedShot.buckets_count;
                     adapter.notifyDataSetChanged();
                     return;
                 }

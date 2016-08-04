@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_POPULAR);
                         break;
                     case R.id.drawer_item_buckets:
-                        fragment = BucketListFragment.newInstance(null, false);
+                        fragment = BucketListFragment.newInstance(null, false, null);
                         break;
                     case R.id.drawer_item_likes:
                         fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_LIKED);
