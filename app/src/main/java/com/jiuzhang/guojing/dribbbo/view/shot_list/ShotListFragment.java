@@ -134,7 +134,7 @@ public class ShotListFragment extends Fragment {
 
         @Override
         protected List<Shot> doJob(Void... params) throws DribbbleException {
-            int page = adapter.getData().size() / Dribbble.COUNT_PER_LOAD + 1;
+            int page = refresh ? 1 : adapter.getData().size() / Dribbble.COUNT_PER_LOAD + 1;
             switch (listType) {
                 case LIST_TYPE_POPULAR:
                     return Dribbble.getShots(page);
@@ -150,9 +150,7 @@ public class ShotListFragment extends Fragment {
 
         @Override
         protected void onSuccess(List<Shot> shots) {
-            if (shots.size() < Dribbble.COUNT_PER_LOAD) {
-                adapter.setShowLoading(false);
-            }
+            adapter.setShowLoading(shots.size() >= Dribbble.COUNT_PER_LOAD);
 
             if (refresh) {
                 swipeRefreshLayout.setRefreshing(false);

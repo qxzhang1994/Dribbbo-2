@@ -180,7 +180,7 @@ public class BucketListFragment extends Fragment {
 
         @Override
         protected List<Bucket> doJob(Void... params) throws DribbbleException {
-            final int page = adapter.getData().size() / Dribbble.COUNT_PER_LOAD + 1;
+            final int page = refresh ? 1 : adapter.getData().size() / Dribbble.COUNT_PER_LOAD + 1;
             return userId == null
                     ? Dribbble.getUserBuckets(page)
                     : Dribbble.getUserBuckets(userId, page);
@@ -188,9 +188,7 @@ public class BucketListFragment extends Fragment {
 
         @Override
         protected void onSuccess(List<Bucket> buckets) {
-            if (buckets.size() < Dribbble.COUNT_PER_LOAD) {
-                adapter.setShowLoading(false);
-            }
+            adapter.setShowLoading(buckets.size() >= Dribbble.COUNT_PER_LOAD);
 
             for (Bucket bucket : buckets) {
                 if (collectedBucketIdSet.contains(bucket.id)) {
