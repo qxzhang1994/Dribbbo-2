@@ -97,9 +97,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginRight="@dimen/spacing_medium"
-            android:src="@mipmap/profile_picture"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            tools:src="@drawable/author_picture_placeholder"/>
 
         <TextView
             android:id="@+id/shot_title"

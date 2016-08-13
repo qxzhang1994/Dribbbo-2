@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ShotImageViewHolder extends RecyclerView.ViewHolder {
+class ShotImageViewHolder extends RecyclerView.ViewHolder {
 
     ImageView image;
 

@@ -9,7 +9,7 @@ import com.jiuzhang.guojing.dribbbo.view.base.BaseViewHolder;
 
 import butterknife.BindView;
 
-public class ShotViewHolder extends BaseViewHolder {
+class ShotViewHolder extends BaseViewHolder {
 
     @BindView(R.id.shot_clickable_cover) public View cover;
     @BindView(R.id.shot_like_count) public TextView likeCount;

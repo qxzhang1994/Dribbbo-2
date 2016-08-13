@@ -10,7 +10,7 @@ import com.jiuzhang.guojing.dribbbo.view.base.BaseViewHolder;
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ShotDetailViewHolder extends BaseViewHolder {
+class ShotDetailViewHolder extends BaseViewHolder {
 
     @BindView(R.id.shot_title) TextView title;
     @BindView(R.id.shot_description) TextView description;

@@ -1,5 +1,7 @@
 package com.jiuzhang.guojing.dribbbo.model;
 
+import android.support.annotation.Nullable;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ public class Shot {
     public int width;
     public int height;
     public Map<String, String> images;
+    public boolean animated;
 
     public int views_count;
     public int likes_count;
@@ -27,4 +30,17 @@ public class Shot {
 
     public boolean liked;
     public boolean bucketed;
+
+    @Nullable
+    public String getImageUrl() {
+        if (images == null) {
+            return null;
+        } else if (animated) {
+            return images.get(IMAGE_NORMAL);
+        }
+
+        return images.containsKey(IMAGE_HIDPI)
+                ? images.get(IMAGE_HIDPI)
+                : images.get(IMAGE_NORMAL);
+    }
 }

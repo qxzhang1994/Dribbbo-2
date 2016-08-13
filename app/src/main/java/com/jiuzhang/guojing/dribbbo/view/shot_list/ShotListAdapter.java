@@ -18,7 +18,7 @@ import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotFragment;
 
 import java.util.List;
 
-public class ShotListAdapter extends InfiniteAdapter<Shot> {
+class ShotListAdapter extends InfiniteAdapter<Shot> {
 
     private final ShotListFragment shotListFragment;
 
@@ -56,7 +56,7 @@ public class ShotListAdapter extends InfiniteAdapter<Shot> {
         shotViewHolder.viewCount.setText(String.valueOf(shot.views_count));
 
         Glide.with(getContext())
-             .load(shot.images.get(Shot.IMAGE_NORMAL))
+             .load(shot.getImageUrl())
              .placeholder(shotListFragment.getResources().getDrawable(R.drawable.shot_placeholder))
              .into(shotViewHolder.image);
     }

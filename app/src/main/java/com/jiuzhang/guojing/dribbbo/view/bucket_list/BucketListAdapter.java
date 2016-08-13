@@ -3,6 +3,7 @@ package com.jiuzhang.guojing.dribbbo.view.bucket_list;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,8 @@ public class BucketListAdapter extends InfiniteAdapter<Bucket> {
             bucketViewHolder.bucketChosen.setVisibility(View.VISIBLE);
             bucketViewHolder.bucketChosen.setImageDrawable(
                     bucket.isChoosing
-                            ? getContext().getResources().getDrawable(R.drawable.ic_check_box_black_24dp)
-                            : getContext().getResources().getDrawable(R.drawable.ic_check_box_outline_blank_black_24dp));
+                            ? ContextCompat.getDrawable(getContext(), R.drawable.ic_check_box_black_24dp)
+                            : ContextCompat.getDrawable(getContext(), R.drawable.ic_check_box_outline_blank_black_24dp));
             bucketViewHolder.bucketLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
