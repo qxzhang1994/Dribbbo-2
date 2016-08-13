@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/spacing_medium">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/spacing_large"
+    android:paddingBottom="@dimen/spacing_medium"
+    android:paddingLeft="@dimen/spacing_medium"
+    android:paddingRight="@dimen/spacing_medium">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/nav_header_user_picture"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/spacing_medium"
+        tools:src="@drawable/author_picture_placeholder"/>
 
     <TextView
-        android:id="@+id/nav_header_logged_in_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Logged in"/>
-
-    <Button
-        android:id="@+id/nav_header_logout_btn"
+        android:id="@+id/nav_header_user_name"
+        tools:text="Shot title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log out"/>
+        android:layout_alignTop="@id/shot_author_picture"
+        android:layout_toRightOf="@id/nav_header_user_picture"
+        android:textColor="@android:color/black"
+        android:textSize="17sp"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/nav_header_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/nav_header_user_name"
+        android:layout_below="@id/nav_header_user_name"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/logout"
+        style="@style/AppTheme.TextView.Clickable"/>
+
+</RelativeLayout>

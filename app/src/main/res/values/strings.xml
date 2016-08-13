@@ -5,12 +5,13 @@
     <string name="drawer_menu_likes">Likes</string>
     <string name="drawer_menu_buckets">Buckets</string>
 
+    <string name="login">Log in</string>
+    <string name="logout">Log out</string>
     <string name="save">Save</string>
+    <string name="share">Share</string>
 
     <string name="open_drawer">open drawer</string>
     <string name="close_drawer">close drawer</string>
-
-    <string name="share">Share</string>
 
     <string name="new_bucket_title">New bucket</string>
     <string name="new_bucket_create">Create</string>

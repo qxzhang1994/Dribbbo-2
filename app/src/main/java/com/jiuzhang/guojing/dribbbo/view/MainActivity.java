@@ -5,14 +5,18 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
@@ -110,20 +114,19 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.inflateHeaderView(Dribbble.isLoggedIn()
                 ? R.layout.nav_header_logged_in
                 : R.layout.nav_header);
+
         if (!Dribbble.isLoggedIn()) {
-            Button loginButton = (Button) headerView.findViewById(R.id.nav_header_login_btn);
-            loginButton.setOnClickListener(new View.OnClickListener() {
+            headerView.findViewById(R.id.nav_header_login_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Auth.openAuthActivity(MainActivity.this);
                 }
             });
         } else {
-            TextView tvUsername = (TextView) headerView.findViewById(R.id.nav_header_logged_in_user);
-            tvUsername.setText(Dribbble.getCurrentUser().name);
+            ((TextView) headerView.findViewById(R.id.nav_header_user_name)).setText(
+                    Dribbble.getCurrentUser().name);
 
-            Button logoutButton = (Button) headerView.findViewById(R.id.nav_header_logout_btn);
-            logoutButton.setOnClickListener(new View.OnClickListener() {
+            headerView.findViewById(R.id.nav_header_logout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Dribbble.logout(MainActivity.this);
@@ -134,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             });
+
+            Glide.with(this)
+                 .load(Dribbble.getCurrentUser().avatar_url)
+                 .placeholder(ContextCompat.getDrawable(this, R.drawable.author_picture_placeholder))
+                 .into((ImageView) headerView.findViewById(R.id.nav_header_user_picture));
         }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

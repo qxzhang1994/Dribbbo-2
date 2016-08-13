@@ -15,4 +15,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.TextView" />
+    <style name="AppTheme.TextView.Clickable">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
