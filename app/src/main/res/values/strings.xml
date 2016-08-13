@@ -23,4 +23,5 @@
     <string name="shot_count_plural">%1$d shots</string>
 
     <string name="shot_detail_loading_buckets">Loading buckets, just one second…</string>
+    <string name="shot_image">Shot image</string>
 </resources>

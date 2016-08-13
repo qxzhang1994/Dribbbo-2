@@ -115,7 +115,7 @@ class ShotAdapter extends RecyclerView.Adapter {
                 });
 
                 Drawable likeDrawable = shot.liked
-                        ? ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_black_18dp)
+                        ? ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_dribbble_18dp)
                         : ContextCompat.getDrawable(getContext(), R.drawable.ic_favorite_border_black_18dp);
                 shotDetailViewHolder.likeButton.setImageDrawable(likeDrawable);
 

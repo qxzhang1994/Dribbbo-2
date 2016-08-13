@@ -9,18 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="?attr/selectableItemBackground">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/shot_image"
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:scaleType="centerCrop"
-            tools:src="@mipmap/artboard_5"/>
+            android:contentDescription="@string/shot_image"
+            tools:src="@drawable/shot_placeholder"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp">
+            android:layout_height="@dimen/list_shot_detail_bar_height">
 
             <TextView
                 android:id="@+id/shot_view_count"
@@ -29,7 +30,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/spacing_large"
                 android:layout_toLeftOf="@+id/shot_like_count"
-                android:drawableLeft="@drawable/ic_visibility_black_18dp"
+                android:drawableLeft="@drawable/ic_visibility_gray_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
                 tools:text="12" />
 
@@ -40,9 +41,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/spacing_large"
                 android:layout_toLeftOf="@+id/shot_bucket_count"
-                android:drawableLeft="@drawable/ic_favorite_black_18dp"
+                android:drawableLeft="@drawable/ic_favorite_gray_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
-                android:text="78"
                 tools:text="78" />
 
             <TextView
@@ -52,9 +52,8 @@
                 android:layout_marginRight="@dimen/spacing_medium"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:drawableLeft="@drawable/ic_inbox_black_18dp"
+                android:drawableLeft="@drawable/ic_inbox_gray_18dp"
                 android:drawablePadding="@dimen/spacing_xsmall"
-                android:text="78"
                 tools:text="78" />
 
         </RelativeLayout>

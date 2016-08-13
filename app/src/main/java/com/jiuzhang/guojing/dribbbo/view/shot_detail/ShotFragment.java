@@ -136,13 +136,13 @@ public class ShotFragment extends Fragment {
 //
 //        if (imageUri != null) {
 //            // imageUri equals null means image loading not finished
-//            Intent shareIntent = new Intent();
-//            shareIntent.setAction(Intent.ACTION_SEND);
-//            shareIntent.putExtra(Intent.EXTRA_TEXT,
-//                                 shot.title + " " + shot.html_url);
-//            shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                 shot.title + " " + shot.html_url);
+        shareIntent.setType("text/plain");
 //            shareIntent.setType("image/*");
-//            startActivity(Intent.createChooser(shareIntent, "Share shot"));
+            startActivity(Intent.createChooser(shareIntent, "Share shot"));
 //        }
     }
 

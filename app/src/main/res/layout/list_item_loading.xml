@@ -2,11 +2,11 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="36dp">
+    android:layout_height="@dimen/loading_item_height">
 
     <ProgressBar
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/loading_progress_bar_size"
+        android:layout_height="@dimen/loading_progress_bar_size"
         android:layout_gravity="center"
         style="?android:attr/progressBarStyle" />
 

@@ -2,6 +2,7 @@ package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ class ShotListAdapter extends InfiniteAdapter<Shot> {
 
         Glide.with(getContext())
              .load(shot.getImageUrl())
-             .placeholder(shotListFragment.getResources().getDrawable(R.drawable.shot_placeholder))
+             .placeholder(ContextCompat.getDrawable(shotListFragment.getContext(), R.drawable.shot_placeholder))
              .into(shotViewHolder.image);
     }
 }
