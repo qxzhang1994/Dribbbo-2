@@ -230,7 +230,7 @@ public class BucketListFragment extends Fragment {
         @Override
         protected void onSuccess(Bucket bucket) {
             bucket.isChoosing = true;
-            adapter.append(Collections.singletonList(bucket));
+            adapter.prepend(Collections.singletonList(bucket));
         }
 
         @Override

@@ -66,8 +66,13 @@ public abstract class InfiniteAdapter<M> extends RecyclerView.Adapter<BaseViewHo
         }
     }
 
-    public void append(@NonNull List<M> moreData) {
-        data.addAll(moreData);
+    public void append(@NonNull List<M> data) {
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void prepend(@NonNull List<M> data) {
+        this.data.addAll(0, data);
         notifyDataSetChanged();
     }
 

@@ -9,10 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +25,7 @@ import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
 import java.io.IOException;
 
+@SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity {
 
     private ActionBarDrawerToggle drawerToggle;
@@ -156,12 +155,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.drawer_item_home:
                         fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_POPULAR);
-                        break;
-                    case R.id.drawer_item_buckets:
-                        fragment = BucketListFragment.newInstance(null, false, null);
+                        setTitle(R.string.title_home);
                         break;
                     case R.id.drawer_item_likes:
                         fragment = ShotListFragment.newInstance(ShotListFragment.LIST_TYPE_LIKED);
+                        setTitle(R.string.title_likes);
+                        break;
+                    case R.id.drawer_item_buckets:
+                        fragment = BucketListFragment.newInstance(null, false, null);
+                        setTitle(R.string.title_buckets);
                         break;
                 }
 
