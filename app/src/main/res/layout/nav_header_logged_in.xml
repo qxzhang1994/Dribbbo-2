@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/spacing_large"
+    android:paddingTop="120dp"
     android:paddingBottom="@dimen/spacing_medium"
     android:paddingLeft="@dimen/spacing_medium"
-    android:paddingRight="@dimen/spacing_medium">
+    android:paddingRight="@dimen/spacing_medium"
+    android:background="@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/nav_header_user_picture"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/spacing_medium"
@@ -20,22 +21,21 @@
 
     <TextView
         android:id="@+id/nav_header_user_name"
-        tools:text="Shot title"
+        tools:text="Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/shot_author_picture"
         android:layout_toRightOf="@id/nav_header_user_picture"
-        android:textColor="@android:color/black"
-        android:textSize="17sp"/>
+        style="@style/AppTheme.TextView.2.White"/>
 
     <TextView
         android:id="@+id/nav_header_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/nav_header_user_name"
+        android:layout_toRightOf="@id/nav_header_user_picture"
         android:layout_below="@id/nav_header_user_name"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:text="@string/logout"
-        style="@style/AppTheme.TextView.Clickable"/>
+        style="@style/AppTheme.TextView.Clickable.1.White"/>
 
 </RelativeLayout>

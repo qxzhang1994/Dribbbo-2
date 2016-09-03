@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,8 +26,15 @@ import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.drawer) NavigationView navigationView;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -34,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -43,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
-                drawerLayout,         /* DrawerLayout object */
-                R.string.open_drawer,  /* "open drawer" description */
-                R.string.close_drawer  /* "close drawer" description */
+                drawerLayout,          /* DrawerLayout object */
+                R.string.open_drawer,         /* "open drawer" description */
+                R.string.close_drawer         /* "close drawer" description */
         );
         drawerLayout.setDrawerListener(drawerToggle);
 
@@ -109,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupDrawer(final DrawerLayout drawerLayout) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);
 
-        // header
+        // dynamically set header, the header is not specified in main_activity.xml layout
         View headerView = navigationView.inflateHeaderView(Dribbble.isLoggedIn()
                 ? R.layout.nav_header_logged_in
                 : R.layout.nav_header);
