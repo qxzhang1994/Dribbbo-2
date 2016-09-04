@@ -54,13 +54,9 @@ class ShotAdapter extends RecyclerView.Adapter {
         switch (viewType) {
             case VIEW_TYPE_SHOT_IMAGE:
                 ImageView shotImageView = ((ShotImageViewHolder) holder).image;
-
-                Drawable placeholderDrawable = ContextCompat.getDrawable(getContext(), R.drawable.shot_placeholder);
-                String imageUrl = shot.getImageUrl();
-
-                Glide.with(getContext().getApplicationContext())
-                     .load(imageUrl)
-                     .placeholder(placeholderDrawable)
+                Glide.with(getContext())
+                     .load(shot.getImageUrl())
+                     .placeholder(R.drawable.shot_placeholder)
                      .into(shotImageView);
                 break;
             case VIEW_TYPE_SHOT_DETAIL:

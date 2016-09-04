@@ -58,7 +58,7 @@ class ShotListAdapter extends InfiniteAdapter<Shot> {
 
         Glide.with(getContext())
              .load(shot.getImageUrl())
-             .placeholder(ContextCompat.getDrawable(shotListFragment.getContext(), R.drawable.shot_placeholder))
+             .placeholder(R.drawable.shot_placeholder)
              .into(shotViewHolder.image);
     }
 }

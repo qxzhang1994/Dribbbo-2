@@ -33,4 +33,5 @@
 
     <string name="auth_activity_title">Log into Dribbble</string>
     <string name="user_profile_picture">User profile picture</string>
+    <string name="share_shot">Share shot</string>
 </resources>

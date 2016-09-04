@@ -123,27 +123,11 @@ public class ShotFragment extends Fragment {
     }
 
     public void share() {
-//        if (!PermissionUtils.checkWriteExternalStoragePermission(getContext())) {
-//            PermissionUtils.requestWriteExternalStoragePermission(getActivity());
-//            return;
-//        }
-//
-//        if (bitmap == null) {
-//            return;
-//        }
-//
-//        Uri imageUri = imageToUri(getContext(), bitmap, shot.title);
-//
-//        if (imageUri != null) {
-//            // imageUri equals null means image loading not finished
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                                 shot.title + " " + shot.html_url);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shot.title + " " + shot.html_url);
         shareIntent.setType("text/plain");
-//            shareIntent.setType("image/*");
-            startActivity(Intent.createChooser(shareIntent, "Share shot"));
-//        }
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_shot)));
     }
 
     private class LikeTask extends DribbbleTask<Void, Void, Void> {
@@ -284,32 +268,4 @@ public class ShotFragment extends Fragment {
             Snackbar.make(getView(), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
-
-//    private static Uri imageToUri(@NonNull Context context,
-//                                  @NonNull Bitmap bitmap,
-//                                  @NonNull String title) {
-//        return Uri.parse(MediaStore.Images.Media.insertImage(
-//                context.getContentResolver(),
-//                bitmap,
-//                title,
-//                null));
-//    }
-
-//    private class BitmapTarget extends SimpleTarget<Bitmap> {
-//
-//        @Override
-//        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//            bitmap = resource;
-//            shotImageView.setImageBitmap(resource);
-//        }
-//    }
-//
-//    private class GifTarget extends SimpleTarget<GifDrawable> {
-//
-//        @Override
-//        public void onResourceReady(GifDrawable resource, GlideAnimation<? super GifDrawable> glideAnimation) {
-//            bitmap = resource.getFirstFrame();
-//            shotImageView.setImageDrawable(resource);
-//        }
-//    }
 }
