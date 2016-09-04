@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +14,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.Auth;
 import com.jiuzhang.guojing.dribbbo.dribbble.auth.AuthActivity;
+import com.jiuzhang.guojing.dribbbo.utils.ImageUtils;
 import com.jiuzhang.guojing.dribbbo.view.bucket_list.BucketListFragment;
 import com.jiuzhang.guojing.dribbbo.view.shot_list.ShotListFragment;
 
@@ -117,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawer(final DrawerLayout drawerLayout) {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.drawer);
-
         // dynamically set header, the header is not specified in main_activity.xml layout
         View headerView = navigationView.inflateHeaderView(Dribbble.isLoggedIn()
                 ? R.layout.nav_header_logged_in
@@ -147,10 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Glide.with(this)
-                 .load(Dribbble.getCurrentUser().avatar_url)
-                 .placeholder(ContextCompat.getDrawable(this, R.drawable.author_picture_placeholder))
-                 .into((ImageView) headerView.findViewById(R.id.nav_header_user_picture));
+            ImageView userPicture = (ImageView) headerView.findViewById(R.id.nav_header_user_picture);
+            ImageUtils.loadUserPicture(this, userPicture, Dribbble.getCurrentUser().avatar_url);
         }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

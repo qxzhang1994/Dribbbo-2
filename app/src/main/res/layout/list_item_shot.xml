@@ -62,7 +62,7 @@
 
     <View
         android:id="@+id/shot_clickable_cover"
-        android:layout_width="match_parent"
+        android:layout_width ="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
         android:background="?attr/selectableItemBackground"/>

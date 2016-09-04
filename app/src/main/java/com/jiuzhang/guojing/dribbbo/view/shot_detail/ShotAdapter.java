@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.utils.ImageUtils;
 
 class ShotAdapter extends RecyclerView.Adapter {
 
@@ -75,10 +76,9 @@ class ShotAdapter extends RecyclerView.Adapter {
                 shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
                 shotDetailViewHolder.viewCount.setText(String.valueOf(shot.views_count));
 
-                Glide.with(getContext())
-                     .load(shot.user.avatar_url)
-                     .placeholder(ContextCompat.getDrawable(getContext(), R.drawable.author_picture_placeholder))
-                     .into(shotDetailViewHolder.authorPicture);
+                ImageUtils.loadUserPicture(getContext(),
+                                           shotDetailViewHolder.authorPicture,
+                                           shot.user.avatar_url);
 
                 shotDetailViewHolder.likeCount.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -92,21 +92,18 @@ class ShotAdapter extends RecyclerView.Adapter {
                         Toast.makeText(getContext(), "Bucket count clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 shotDetailViewHolder.likeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         shotFragment.like(shot.id, !shot.liked);
                     }
                 });
-
                 shotDetailViewHolder.bucketButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         shotFragment.bucket();
                     }
                 });
-
                 shotDetailViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
