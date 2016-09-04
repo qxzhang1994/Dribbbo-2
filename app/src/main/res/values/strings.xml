@@ -29,4 +29,5 @@
     <string name="shot_detail_loading_buckets">Loading buckets, just one second…</string>
     <string name="shot_image">Shot image</string>
     <string name="choose_bucket">Choose bucket</string>
+    <string name="auth_activity_title">Log into Dribbble</string>
 </resources>

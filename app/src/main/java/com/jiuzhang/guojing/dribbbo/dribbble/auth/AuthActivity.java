@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -14,25 +15,31 @@ import android.widget.ProgressBar;
 
 import com.jiuzhang.guojing.dribbbo.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+@SuppressWarnings("ConstantConditions")
 public class AuthActivity extends AppCompatActivity {
 
     public static final String KEY_URL = "url";
     public static final String KEY_CODE = "code";
 
-    private ProgressBar progressBar;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.webview) WebView webView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
+        ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Log into Dribbble");
+        setTitle(getString(R.string.auth_activity_title));
 
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setMax(100);
 
-        WebView webView = (WebView) findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
