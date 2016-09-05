@@ -47,6 +47,7 @@ class ShotListAdapter extends InfiniteAdapter<Shot> {
                 Intent intent = new Intent(getContext(), ShotActivity.class);
                 intent.putExtra(ShotFragment.KEY_SHOT,
                                 ModelUtils.toString(shot, new TypeToken<Shot>(){}));
+                intent.putExtra(ShotActivity.KEY_SHOT_TITLE, shot.title);
                 shotListFragment.startActivityForResult(intent, ShotListFragment.REQ_CODE_SHOT);
             }
         });
