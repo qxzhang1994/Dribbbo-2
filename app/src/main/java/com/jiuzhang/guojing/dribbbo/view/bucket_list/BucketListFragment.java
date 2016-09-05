@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +57,7 @@ public class BucketListFragment extends Fragment {
     private InfiniteAdapter.LoadMoreListener onLoadMore = new InfiniteAdapter.LoadMoreListener() {
         @Override
         public void onLoadMore() {
-            AsyncTaskCompat.executeParallel(new LoadBucketsTask(false));
+            new LoadBucketsTask(false).execute();
         }
     };
 
@@ -113,7 +112,7 @@ public class BucketListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                AsyncTaskCompat.executeParallel(new LoadBucketsTask(true));
+                new LoadBucketsTask(true).execute();
             }
         });
 
@@ -165,7 +164,7 @@ public class BucketListFragment extends Fragment {
             String bucketName = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_NAME);
             String bucketDescription = data.getStringExtra(NewBucketDialogFragment.KEY_BUCKET_DESCRIPTION);
             if (!TextUtils.isEmpty(bucketName)) {
-                AsyncTaskCompat.executeParallel(new NewBucketTask(bucketName, bucketDescription));
+                new NewBucketTask(bucketName, bucketDescription).execute();
             }
         }
     }

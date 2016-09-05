@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
+    <!--
+        Wrapping CoordinatorLayout is only to fix the status bar color bug.
+        See: https://stackoverflow.com/questions/32428700/status-bar-turns-white-and-does-not-show-content-behind-it/33769905
+    -->
 
-    <WebView
-        android:id="@+id/webview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"/>
+        android:orientation="vertical"
+        android:fitsSystemWindows="true">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_auth_progress_bar_height"
-        android:layout_below="@+id/toolbar"
-        style="?android:attr/progressBarStyleHorizontal"/>
+        <include layout="@layout/toolbar"/>
 
-</RelativeLayout>
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_auth_progress_bar_height"
+            android:layout_below="@+id/toolbar"
+            style="?android:attr/progressBarStyleHorizontal"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

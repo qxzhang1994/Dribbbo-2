@@ -2,6 +2,7 @@ package com.jiuzhang.guojing.dribbbo.view.shot_detail;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -66,9 +67,7 @@ class ShotAdapter extends RecyclerView.Adapter {
                 shotDetailViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
                 shotDetailViewHolder.viewCount.setText(String.valueOf(shot.views_count));
 
-                ImageUtils.loadUserPicture(getContext(),
-                                           shotDetailViewHolder.authorPicture,
-                                           shot.user.avatar_url);
+                shotDetailViewHolder.authorPicture.setImageURI(Uri.parse(shot.user.avatar_url));
 
                 shotDetailViewHolder.likeCount.setOnClickListener(new View.OnClickListener() {
                     @Override

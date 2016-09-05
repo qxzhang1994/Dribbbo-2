@@ -11,7 +11,6 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="nav_header_height">192dp</dimen>
 
     <dimen name="shot_author_picture_size">48dp</dimen>
     <dimen name="shot_author_picture_radius">24dp</dimen>
@@ -23,6 +22,9 @@
     <dimen name="loading_progress_bar_size">24dp</dimen>
     <dimen name="loading_item_height">36dp</dimen>
     <dimen name="activity_auth_progress_bar_height">2dp</dimen>
-    <dimen name="nav_headder_login_btn_margin_left">-8dp</dimen>
+
+    <dimen name="nav_header_height">192dp</dimen>
+    <dimen name="nav_header_login_btn_margin_left">-8dp</dimen>
+    <dimen name="nav_header_user_picture_size">56dp</dimen>
 
 </resources>

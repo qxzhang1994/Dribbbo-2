@@ -2,6 +2,7 @@ package com.jiuzhang.guojing.dribbbo.view;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.dribbble.Dribbble;
 import com.jiuzhang.guojing.dribbbo.dribbble.DribbbleException;
@@ -106,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView userPicture = (ImageView) headerView.findViewById(R.id.nav_header_user_picture);
-        ImageUtils.loadUserPicture(this, userPicture, Dribbble.getCurrentUser().avatar_url);
+        ((SimpleDraweeView) headerView.findViewById(R.id.nav_header_user_picture))
+                .setImageURI(Uri.parse(Dribbble.getCurrentUser().avatar_url));
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

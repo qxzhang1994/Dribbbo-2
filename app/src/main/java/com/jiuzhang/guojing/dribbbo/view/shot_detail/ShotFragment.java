@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,8 +69,8 @@ public class ShotFragment extends Fragment {
         recyclerView.setAdapter(new ShotAdapter(this, shot));
 
         isLiking = true;
-        AsyncTaskCompat.executeParallel(new CheckLikeTask());
-        AsyncTaskCompat.executeParallel(new LoadBucketsTask());
+        new CheckLikeTask().execute();
+        new LoadBucketsTask().execute();
     }
 
     @Override
@@ -93,7 +92,7 @@ public class ShotFragment extends Fragment {
                 }
             }
 
-            AsyncTaskCompat.executeParallel(new UpdateBucketTask(addedBucketIds, removedBucketIds));
+            new UpdateBucketTask(addedBucketIds, removedBucketIds).execute();
         }
     }
 
@@ -106,7 +105,7 @@ public class ShotFragment extends Fragment {
     public void like(@NonNull String shotId, boolean like) {
         if (!isLiking) {
             isLiking = true;
-            AsyncTaskCompat.executeParallel(new LikeTask(shotId, like));
+            new LikeTask(shotId, like).execute();
         }
     }
 
