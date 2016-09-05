@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/nav_header_user_picture"
         android:layout_below="@id/nav_header_user_name"
-        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:layout_marginLeft="@dimen/nav_headder_login_btn_margin_left"
         android:text="@string/logout"
         style="@style/AppTheme.TextView.Clickable.1.White"/>
 

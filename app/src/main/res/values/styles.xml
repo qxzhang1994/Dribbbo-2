@@ -42,6 +42,7 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/spacing_small</item>
     </style>
 
     <style name="AppTheme.TextView.Clickable.1" parent="AppTheme.TextView.Clickable">

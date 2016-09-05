@@ -1,9 +1,7 @@
 package com.jiuzhang.guojing.dribbbo.dribbble.auth;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -70,7 +68,7 @@ public class Auth {
         activity.startActivityForResult(intent, REQ_CODE);
     }
 
-    public static String fetchAccessToken(@NonNull final Context context, String authCode)
+    public static String fetchAccessToken(String authCode)
             throws IOException {
         OkHttpClient client = new OkHttpClient();
         RequestBody postBody = new FormBody.Builder()

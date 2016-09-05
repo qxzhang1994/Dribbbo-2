@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        Dribbble.init(this);
-
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -90,63 +88,26 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == Auth.REQ_CODE) {
-            final String authCode = data.getStringExtra(AuthActivity.KEY_CODE);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String token = Auth.fetchAccessToken(MainActivity.this, authCode);
-                        Dribbble.login(MainActivity.this, token);
-
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                        startActivity(intent);
-
-                        finish();
-                    } catch (IOException | DribbbleException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
-    }
-
     private void setupDrawer(final DrawerLayout drawerLayout) {
         // dynamically set header, the header is not specified in main_activity.xml layout
-        View headerView = navigationView.inflateHeaderView(Dribbble.isLoggedIn()
-                ? R.layout.nav_header_logged_in
-                : R.layout.nav_header);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_logged_in);
 
-        if (!Dribbble.isLoggedIn()) {
-            headerView.findViewById(R.id.nav_header_login_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Auth.openAuthActivity(MainActivity.this);
-                }
-            });
-        } else {
-            ((TextView) headerView.findViewById(R.id.nav_header_user_name)).setText(
-                    Dribbble.getCurrentUser().name);
+        ((TextView) headerView.findViewById(R.id.nav_header_user_name)).setText(
+                Dribbble.getCurrentUser().name);
 
-            headerView.findViewById(R.id.nav_header_logout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Dribbble.logout(MainActivity.this);
+        headerView.findViewById(R.id.nav_header_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dribbble.logout(MainActivity.this);
 
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-                    finish();
-                }
-            });
-
-            ImageView userPicture = (ImageView) headerView.findViewById(R.id.nav_header_user_picture);
-            ImageUtils.loadUserPicture(this, userPicture, Dribbble.getCurrentUser().avatar_url);
-        }
+        ImageView userPicture = (ImageView) headerView.findViewById(R.id.nav_header_user_picture);
+        ImageUtils.loadUserPicture(this, userPicture, Dribbble.getCurrentUser().avatar_url);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
