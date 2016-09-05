@@ -10,10 +10,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
 import com.jiuzhang.guojing.dribbbo.utils.ImageUtils;
@@ -53,11 +51,7 @@ class ShotAdapter extends RecyclerView.Adapter {
         final int viewType = getItemViewType(position);
         switch (viewType) {
             case VIEW_TYPE_SHOT_IMAGE:
-                ImageView shotImageView = ((ShotImageViewHolder) holder).image;
-                Glide.with(getContext())
-                     .load(shot.getImageUrl())
-                     .placeholder(R.drawable.shot_placeholder)
-                     .into(shotImageView);
+                ImageUtils.loadShotImage(shot, ((ShotImageViewHolder) holder).image);
                 break;
             case VIEW_TYPE_SHOT_DETAIL:
                 final ShotDetailViewHolder shotDetailViewHolder = (ShotDetailViewHolder) holder;

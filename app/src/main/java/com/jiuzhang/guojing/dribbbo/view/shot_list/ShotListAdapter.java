@@ -2,15 +2,14 @@ package com.jiuzhang.guojing.dribbbo.view.shot_list;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.guojing.dribbbo.R;
 import com.jiuzhang.guojing.dribbbo.model.Shot;
+import com.jiuzhang.guojing.dribbbo.utils.ImageUtils;
 import com.jiuzhang.guojing.dribbbo.utils.ModelUtils;
 import com.jiuzhang.guojing.dribbbo.view.shot_detail.ShotActivity;
 import com.jiuzhang.guojing.dribbbo.view.base.BaseViewHolder;
@@ -56,9 +55,6 @@ class ShotListAdapter extends InfiniteAdapter<Shot> {
         shotViewHolder.bucketCount.setText(String.valueOf(shot.buckets_count));
         shotViewHolder.viewCount.setText(String.valueOf(shot.views_count));
 
-        Glide.with(getContext())
-             .load(shot.getImageUrl())
-             .placeholder(R.drawable.shot_placeholder)
-             .into(shotViewHolder.image);
+        ImageUtils.loadShotImage(shot, shotViewHolder.image);
     }
 }
