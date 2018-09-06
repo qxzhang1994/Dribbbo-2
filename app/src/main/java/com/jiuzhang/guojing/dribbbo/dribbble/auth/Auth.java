@@ -27,8 +27,8 @@ public class Auth {
     private static final String KEY_SCOPE = "scope";
     private static final String KEY_ACCESS_TOKEN = "access_token";
 
-    private static final String CLIENT_ID = "16b5398857f25ebbcf6e8efe9c27f6379998d0de45a16f24a042d3f3670a6a71";
-    private static final String CLIENT_SECRET = "ac82fa0892b5215185c6b4246561286227a0c79d33f3e83979eebf3da9d9b763";
+    private static final String CLIENT_ID = "c635cc277303e7bc9d553c98c1586568b5063044171adfab77fe078ebcc6ee83";
+    private static final String CLIENT_SECRET = "c18308b4adf98febefbcecf934012bb49ab6f2f41dac1f148600d962216e39a6";
     private static final String SCOPE = "public+write";
 
     private static final String URI_AUTHORIZE = "https://dribbble.com/oauth/authorize";
